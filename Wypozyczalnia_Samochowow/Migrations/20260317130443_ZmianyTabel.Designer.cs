@@ -12,8 +12,8 @@ using Wypozyczalnia_Samochodow.Data;
 namespace Wypozyczalnia_Samochodow.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260312204127_Init3")]
-    partial class Init3
+    [Migration("20260317130443_ZmianyTabel")]
+    partial class ZmianyTabel
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,59 +27,65 @@ namespace Wypozyczalnia_Samochodow.Migrations
 
             modelBuilder.Entity("Wypozyczalnia_Samochodow.Models.Klient", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("IdKlienta")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdKlienta"));
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Imie")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Nazwisko")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("NrPrawaJazdy")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Telefon")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
-                    b.HasKey("Id");
+                    b.HasKey("IdKlienta");
 
                     b.ToTable("Klienci");
                 });
 
             modelBuilder.Entity("Wypozyczalnia_Samochodow.Models.Platnosc", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("IdPlatnosci")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdPlatnosci"));
 
                     b.Property<DateTime>("Data")
                         .HasColumnType("datetime2");
 
-                    b.Property<double>("Kwota")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Kwota")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<int>("WypozyczenieId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("IdPlatnosci");
 
                     b.HasIndex("WypozyczenieId")
                         .IsUnique();
@@ -89,48 +95,51 @@ namespace Wypozyczalnia_Samochodow.Migrations
 
             modelBuilder.Entity("Wypozyczalnia_Samochodow.Models.Samochod", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("IdSamochodu")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdSamochodu"));
 
-                    b.Property<double>("CenaZaDzien")
-                        .HasColumnType("float");
+                    b.Property<decimal>("CenaZaDzien")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<bool>("Dostepny")
                         .HasColumnType("bit");
 
                     b.Property<string>("Marka")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Model")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Rejestracja")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<int>("Rok")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("IdSamochodu");
 
                     b.ToTable("Samochody");
                 });
 
             modelBuilder.Entity("Wypozyczalnia_Samochodow.Models.Wypozyczenie", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("IdWypozyczenia")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdWypozyczenia"));
 
-                    b.Property<double>("CenaCalkowita")
-                        .HasColumnType("float");
+                    b.Property<decimal>("CenaCalkowita")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("DataWypozyczenia")
                         .HasColumnType("datetime2");
@@ -144,7 +153,7 @@ namespace Wypozyczalnia_Samochodow.Migrations
                     b.Property<int>("SamochodId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("IdWypozyczenia");
 
                     b.HasIndex("KlientId");
 

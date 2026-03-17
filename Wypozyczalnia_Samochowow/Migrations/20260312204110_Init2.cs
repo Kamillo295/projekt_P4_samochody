@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Wypozyczalnia_Samochowow.Migrations
+namespace Wypozyczalnia_Samochodow.Migrations
 {
     /// <inheritdoc />
     public partial class Init2 : Migration

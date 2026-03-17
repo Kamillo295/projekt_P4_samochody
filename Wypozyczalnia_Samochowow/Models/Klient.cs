@@ -1,21 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
+using Wypozyczalnia_Samochodow.Models;
 
-namespace Wypozyczalnia_Samochowow.Models
+namespace Wypozyczalnia_Samochodow.Models
 {
     public class Klient
     {
-        public int Id { get; set; }
-        public string Imie { get; set; }
-        public string Nazwisko { get; set; }
-        public string Telefon { get; set; }
-        public string Email { get; set; }
-        public string NrPrawaJazdy { get; set; }
-        public List<Wypozyczenie> Wypozyczenia { get; set; }
-    }
+        [Key]
+        public int IdKlienta { get; set; }
 
+        [Required]
+        [MaxLength(50)]
+        public string Imie { get; set; }
+
+        [Required]
+        [MaxLength(50)]
+        public string Nazwisko { get; set; }
+
+        [Required]
+        [Phone]
+        [MaxLength(15)]
+        public string Telefon { get; set; }
+
+        [Required]
+        [EmailAddress]
+        [MaxLength(100)]
+        public string Email { get; set; }
+
+        [Required]
+        [MaxLength(20)]
+        public string NrPrawaJazdy { get; set; }
+
+        public ICollection<Wypozyczenie> Wypozyczenia { get; set; } = new List<Wypozyczenie>();
+    }
 }

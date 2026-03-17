@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Wypozyczalnia_Samochowow.Models;
+using Wypozyczalnia_Samochodow.Models;
 
-namespace WypozyczalniaSamochodow.Data
+namespace Wypozyczalnia_Samochodow.Data
 {
     public class AppDbContext : DbContext
     {

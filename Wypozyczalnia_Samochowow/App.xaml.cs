@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows;
 
-namespace Wypozyczalnia_Samochowow
+namespace Wypozyczalnia_Samochodow
 {
     /// <summary>
     /// Interaction logic for App.xaml

@@ -9,7 +9,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Wypozyczalnia_Samochowow
+namespace Wypozyczalnia_Samochodow
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

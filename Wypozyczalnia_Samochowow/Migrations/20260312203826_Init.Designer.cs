@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using WypozyczalniaSamochodow.Data;
+using Wypozyczalnia_Samochodow.Data;
 
 #nullable disable
 
-namespace Wypozyczalnia_Samochowow.Migrations
+namespace Wypozyczalnia_Samochodow.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20260312203826_Init")]
@@ -25,7 +25,7 @@ namespace Wypozyczalnia_Samochowow.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Wypozyczalnia_Samochowow.Models.Klient", b =>
+            modelBuilder.Entity("Wypozyczalnia_Samochodow.Models.Klient", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -58,7 +58,7 @@ namespace Wypozyczalnia_Samochowow.Migrations
                     b.ToTable("Klienci");
                 });
 
-            modelBuilder.Entity("Wypozyczalnia_Samochowow.Models.Platnosc", b =>
+            modelBuilder.Entity("Wypozyczalnia_Samochodow.Models.Platnosc", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -87,7 +87,7 @@ namespace Wypozyczalnia_Samochowow.Migrations
                     b.ToTable("Platnosci");
                 });
 
-            modelBuilder.Entity("Wypozyczalnia_Samochowow.Models.Samochod", b =>
+            modelBuilder.Entity("Wypozyczalnia_Samochodow.Models.Samochod", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -121,7 +121,7 @@ namespace Wypozyczalnia_Samochowow.Migrations
                     b.ToTable("Samochody");
                 });
 
-            modelBuilder.Entity("Wypozyczalnia_Samochowow.Models.Wypozyczenie", b =>
+            modelBuilder.Entity("Wypozyczalnia_Samochodow.Models.Wypozyczenie", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -153,26 +153,26 @@ namespace Wypozyczalnia_Samochowow.Migrations
                     b.ToTable("Wypozyczenia");
                 });
 
-            modelBuilder.Entity("Wypozyczalnia_Samochowow.Models.Platnosc", b =>
+            modelBuilder.Entity("Wypozyczalnia_Samochodow.Models.Platnosc", b =>
                 {
-                    b.HasOne("Wypozyczalnia_Samochowow.Models.Wypozyczenie", "Wypozyczenie")
+                    b.HasOne("Wypozyczalnia_Samochodow.Models.Wypozyczenie", "Wypozyczenie")
                         .WithOne("Platnosc")
-                        .HasForeignKey("Wypozyczalnia_Samochowow.Models.Platnosc", "WypozyczenieId")
+                        .HasForeignKey("Wypozyczalnia_Samochodow.Models.Platnosc", "WypozyczenieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Wypozyczenie");
                 });
 
-            modelBuilder.Entity("Wypozyczalnia_Samochowow.Models.Wypozyczenie", b =>
+            modelBuilder.Entity("Wypozyczalnia_Samochodow.Models.Wypozyczenie", b =>
                 {
-                    b.HasOne("Wypozyczalnia_Samochowow.Models.Klient", "Klient")
+                    b.HasOne("Wypozyczalnia_Samochodow.Models.Klient", "Klient")
                         .WithMany("Wypozyczenia")
                         .HasForeignKey("KlientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Wypozyczalnia_Samochowow.Models.Samochod", "Samochod")
+                    b.HasOne("Wypozyczalnia_Samochodow.Models.Samochod", "Samochod")
                         .WithMany("Wypozyczenia")
                         .HasForeignKey("SamochodId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -183,17 +183,17 @@ namespace Wypozyczalnia_Samochowow.Migrations
                     b.Navigation("Samochod");
                 });
 
-            modelBuilder.Entity("Wypozyczalnia_Samochowow.Models.Klient", b =>
+            modelBuilder.Entity("Wypozyczalnia_Samochodow.Models.Klient", b =>
                 {
                     b.Navigation("Wypozyczenia");
                 });
 
-            modelBuilder.Entity("Wypozyczalnia_Samochowow.Models.Samochod", b =>
+            modelBuilder.Entity("Wypozyczalnia_Samochodow.Models.Samochod", b =>
                 {
                     b.Navigation("Wypozyczenia");
                 });
 
-            modelBuilder.Entity("Wypozyczalnia_Samochowow.Models.Wypozyczenie", b =>
+            modelBuilder.Entity("Wypozyczalnia_Samochodow.Models.Wypozyczenie", b =>
                 {
                     b.Navigation("Platnosc")
                         .IsRequired();
