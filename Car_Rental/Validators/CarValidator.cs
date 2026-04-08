@@ -16,7 +16,7 @@ namespace CarRental.Validators
                 .InclusiveBetween(1900, System.DateTime.Now.Year + 1)
                 .WithMessage("Niepoprawny rok produkcji");
             RuleFor(c => c.RegistrationNumber)
-                .NotEmpty()
+                .NotEmpty().WithMessage("Numer jest za krótki")
                 .MinimumLength(3)
                 .WithMessage("Numer jest za krótki");
             RuleFor(c => c.PricePerDay)

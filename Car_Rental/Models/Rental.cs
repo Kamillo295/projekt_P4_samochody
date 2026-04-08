@@ -2,7 +2,6 @@
 
 namespace CarRental.Models
 {
-    // Model reprezentujący sam proces wypożyczenia
     public class Rental
     {
         public int Id { get; set; }

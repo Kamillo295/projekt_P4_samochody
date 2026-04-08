@@ -2,7 +2,6 @@
 
 namespace CarRental.Models
 {
-    // Model reprezentujący klienta
     public class Customer
     {
         public int Id { get; set; }

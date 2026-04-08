@@ -5,8 +5,32 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Car_Rental.Views"
         mc:Ignorable="d"
-        Title="RentalPage" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="Rejestracja Wynajmu" Height="450" Width="800">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="20">
+            <TextBlock Text="NOWY WYNAJEM" FontSize="20" FontWeight="SemiBold"/>
+            
+            <TextBlock Text="Data rozpoczęcia:" Margin="0,0,0,5" FontWeight="SemiBold"/>
+            <DatePicker x:Name="StartDatePicker" SelectedDate="{Binding StartDate, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Width="300" HorizontalAlignment="Left" Margin="0,0,0,2"/>
+            <TextBlock Text="{Binding ElementName=StartDatePicker, Path=(Validation.Errors)[0].ErrorContent}" Foreground="Red" FontSize="11" Margin="0,0,0,10"/>
+
+            <TextBlock Text="Data zakończenia:" Margin="0,0,0,5" FontWeight="SemiBold"/>
+            <DatePicker x:Name="EndDatePicker" SelectedDate="{Binding EndDate, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Width="300" HorizontalAlignment="Left" Margin="0,0,0,2"/>
+            <TextBlock Text="{Binding ElementName=EndDatePicker, Path=(Validation.Errors)[0].ErrorContent}" Foreground="Red" FontSize="11" Margin="0,0,0,10"/>
+
+            <TextBlock Text="Wybierz Samochód:" Margin="0,0,0,5" FontWeight="SemiBold"/>
+            <ComboBox x:Name="CarComboBox" SelectedValue="{Binding CarId, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Id" DisplayMemberPath="Make" Width="300" HorizontalAlignment="Left" Height="25" Margin="0,0,0,2"/>
+            <TextBlock Text="{Binding ElementName=CarComboBox, Path=(Validation.Errors)[0].ErrorContent}" Foreground="Red" FontSize="11" Margin="0,0,0,10"/>
+
+            <TextBlock Text="Wybierz Klienta:" Margin="0,0,0,5" FontWeight="SemiBold"/>
+            <ComboBox x:Name="CustomerComboBox" SelectedValue="{Binding CustomerId, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Id" DisplayMemberPath="LastName" Width="300" HorizontalAlignment="Left" Height="25" Margin="0,0,0,2"/>
+            <TextBlock Text="{Binding ElementName=CustomerComboBox, Path=(Validation.Errors)[0].ErrorContent}" Foreground="Red" FontSize="11" Margin="0,0,0,10"/>
+
+            <TextBlock Text="Całkowita cena (PLN):" Margin="0,0,0,5" FontWeight="SemiBold"/>
+            <TextBox x:Name="PriceTxt" Text="{Binding TotalPrice, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Width="300" HorizontalAlignment="Left" Padding="4" Margin="0,0,0,2"/>
+            <TextBlock Text="{Binding ElementName=PriceTxt, Path=(Validation.Errors)[0].ErrorContent}" Foreground="Red" FontSize="11" Margin="0,0,0,10"/>
+
+            <Button Content="Zapisz Wynajem" Click="SaveRental_Click" Width="150" HorizontalAlignment="Left" Padding="8" Margin="0,10,0,0"/>
+        </StackPanel>
+    </ScrollViewer>
 </Page>

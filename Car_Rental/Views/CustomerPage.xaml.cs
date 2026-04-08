@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls; // Wymagane dla obiektu Page
+using Car_Rental.Data;
 using Car_Rental.ViewModels;
 using CarRental.ViewModels;
 
@@ -20,11 +21,23 @@ namespace CarRental.Views
         {
             if (ViewModel.Validate())
             {
-                MessageBox.Show("Klient został pomyślnie zapisany w bazie!", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
+                try
+                {
+                    using (var context = new CarRentalContext())
+                    {
+                        context.Customers.Add(ViewModel.CustomerRecord);
+                        context.SaveChanges();
+                    }
+                    MessageBox.Show("Klient został pomyślnie zapisany w bazie!", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                // Czyścimy formularz poprzez zresetowanie ViewModelu
-                ViewModel = new CustomerViewModel();
-                this.DataContext = ViewModel;
+                    ViewModel = new CustomerViewModel();
+                    this.DataContext = ViewModel;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Wystąpił błąd podczas zapisu do bazy: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+
             }
             else
             {

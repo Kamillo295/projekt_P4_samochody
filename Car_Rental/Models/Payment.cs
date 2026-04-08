@@ -2,7 +2,6 @@
 
 namespace CarRental.Models
 {
-    // Model reprezentujący płatność za wynajem
     public class Payment
     {
         public int Id { get; set; }
