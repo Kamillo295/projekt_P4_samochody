@@ -18,20 +18,29 @@ namespace CarRental.Services
             }
         }
 
-        public List<CarDisplayDto> GetAllCars()
+        public void UpdateCar(Car car)
         {
             using (var context = new CarRentalContext())
             {
-                return context.Cars.Select(c => new CarDisplayDto
-                {
-                    Id = c.Id,
-                    Make = c.Make,
-                    Model = c.Model,
-                    Year = c.Year,
-                    RegistrationNumber = c.RegistrationNumber,
-                    PricePerDay = c.PricePerDay,
-                    IsAvailable = c.IsAvailable
-                }).ToList();
+                context.Cars.Update(car);
+                context.SaveChanges();
+            }
+        }
+
+        public void DeleteCar(Car car)
+        {
+            using (var context = new CarRentalContext())
+            {
+                context.Cars.Remove(car);
+                context.SaveChanges();
+            }
+        }
+
+        public List<Car> GetAllCars()
+        {
+            using (var context = new CarRentalContext())
+            {
+                return context.Cars.ToList();
             }
         }
     }

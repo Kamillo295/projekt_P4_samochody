@@ -8,6 +8,8 @@ namespace CarRental.Services
     public interface ICarService
     {
         void AddCar(Car car);
-        List<CarDisplayDto> GetAllCars();
+        void UpdateCar(Car car);
+        void DeleteCar(Car car);
+        List<Car> GetAllCars();
     }
 }

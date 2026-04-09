@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using CarRental.Models;
 using CarRental.Validators;
-using System.Collections.ObjectModel; // Potrzebne do ObservableCollection
+using System.Collections.ObjectModel;
 using CarRental.Services;
 using CarRental.DTOs;
 
@@ -13,7 +13,7 @@ namespace CarRental.ViewModels
         private readonly ICarService _carService;
 
         public Car CarRecord { get; set; } = new Car();
-        public ObservableCollection<CarDisplayDto> ListaSamochodow {  get; set; }
+        public ObservableCollection<Car> ListaSamochodow {  get; set; }
 
         private List<string> _dostkietePola = new List<string>();
         private bool _pokazujWszystkieBledy = false;
@@ -22,7 +22,7 @@ namespace CarRental.ViewModels
         {
             _carService = carService;
 
-            ListaSamochodow = new ObservableCollection<CarDisplayDto>();
+            ListaSamochodow = new ObservableCollection<Car>();
             WczytajSamochody();
         }
 
@@ -35,6 +35,11 @@ namespace CarRental.ViewModels
             {
                 ListaSamochodow.Add(auto);
             }
+        }
+
+        public void AktualizujSamochod()
+        {
+            _carService.UpdateCar(CarRecord);
         }
 
         public void ZapiszSamochod()
