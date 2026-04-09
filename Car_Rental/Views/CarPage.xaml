@@ -3,51 +3,59 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Title="Zarządzanie Samochodami">
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="20">
-            <TextBlock Text="DODAWANIE NOWEGO SAMOCHODU" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"/>
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-            <TextBlock Text="Marka samochodu:" Margin="0,0,0,5" FontWeight="SemiBold"/>
-            <TextBox x:Name="MakeTxt" 
-                     Text="{Binding Make, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" 
-                     Width="300" HorizontalAlignment="Left" Padding="4" Margin="0,0,0,2"/>
-            <TextBlock Text="{Binding ElementName=MakeTxt, Path=(Validation.Errors)[0].ErrorContent}" 
-                       Foreground="Red" FontSize="11" Margin="0,0,0,10"/>
+        <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" Margin="0,0,20,0">
+            <StackPanel Margin="10">
+                <TextBlock Text="DODAWANIE NOWEGO SAMOCHODU" FontSize="18" FontWeight="Bold" Margin="0,0,0,20"/>
 
-            <TextBlock Text="Model samochodu:" Margin="0,0,0,5" FontWeight="SemiBold"/>
-            <TextBox x:Name="ModelTxt" 
-                     Text="{Binding Model, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" 
-                     Width="300" HorizontalAlignment="Left" Padding="4" Margin="0,0,0,2"/>
-            <TextBlock Text="{Binding ElementName=ModelTxt, Path=(Validation.Errors)[0].ErrorContent}" 
-                       Foreground="Red" FontSize="11" Margin="0,0,0,10"/>
+                <TextBlock Text="Marka samochodu:" FontWeight="SemiBold"/>
+                <TextBox x:Name="MakeTxt" Text="{Binding Make, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Width="250" HorizontalAlignment="Left" Padding="4" Margin="0,2,0,2"/>
+                <TextBlock Text="{Binding ElementName=MakeTxt, Path=(Validation.Errors)[0].ErrorContent}" Foreground="Red" FontSize="11" Margin="0,0,0,10"/>
 
-            <TextBlock Text="Rok produkcji:" Margin="0,0,0,5" FontWeight="SemiBold"/>
-            <TextBox x:Name="YearTxt" 
-                     Text="{Binding Year, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" 
-                     Width="300" HorizontalAlignment="Left" Padding="4" Margin="0,0,0,2"/>
-            <TextBlock Text="{Binding ElementName=YearTxt, Path=(Validation.Errors)[0].ErrorContent}" 
-                       Foreground="Red" FontSize="11" Margin="0,0,0,10"/>
+                <TextBlock Text="Model samochodu:" FontWeight="SemiBold"/>
+                <TextBox x:Name="ModelTxt" Text="{Binding Model, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Width="250" HorizontalAlignment="Left" Padding="4" Margin="0,2,0,2"/>
+                <TextBlock Text="{Binding ElementName=ModelTxt, Path=(Validation.Errors)[0].ErrorContent}" Foreground="Red" FontSize="11" Margin="0,0,0,10"/>
 
-            <TextBlock Text="Numer rejestracyjny:" Margin="0,0,0,5" FontWeight="SemiBold"/>
-            <TextBox x:Name="RegNumTxt" 
-                     Text="{Binding RegistrationNumber, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" 
-                     Width="300" HorizontalAlignment="Left" Padding="4" Margin="0,0,0,2"/>
-            <TextBlock Text="{Binding ElementName=RegNumTxt, Path=(Validation.Errors)[0].ErrorContent}" 
-                       Foreground="Red" FontSize="11" Margin="0,0,0,10"/>
+                <TextBlock Text="Rok produkcji:" FontWeight="SemiBold"/>
+                <TextBox x:Name="YearTxt" Text="{Binding Year, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Width="250" HorizontalAlignment="Left" Padding="4" Margin="0,2,0,2"/>
+                <TextBlock Text="{Binding ElementName=YearTxt, Path=(Validation.Errors)[0].ErrorContent}" Foreground="Red" FontSize="11" Margin="0,0,0,10"/>
 
-            <TextBlock Text="Cena wynajmu za dzień (PLN):" Margin="0,0,0,5" FontWeight="SemiBold"/>
-            <TextBox x:Name="PriceTxt" 
-                     Text="{Binding PricePerDay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" 
-                     Width="300" HorizontalAlignment="Left" Padding="4" Margin="0,0,0,2"/>
-            <TextBlock Text="{Binding ElementName=PriceTxt, Path=(Validation.Errors)[0].ErrorContent}" 
-                       Foreground="Red" FontSize="11" Margin="0,0,0,10"/>
+                <TextBlock Text="Numer rejestracyjny:" FontWeight="SemiBold"/>
+                <TextBox x:Name="RegNumTxt" Text="{Binding RegistrationNumber, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Width="250" HorizontalAlignment="Left" Padding="4" Margin="0,2,0,2"/>
+                <TextBlock Text="{Binding ElementName=RegNumTxt, Path=(Validation.Errors)[0].ErrorContent}" Foreground="Red" FontSize="11" Margin="0,0,0,10"/>
 
-            <CheckBox x:Name="AvailableChk" 
-                      Content="Pojazd gotowy do wynajmu (Dostępny)" 
-                      IsChecked="{Binding IsAvailable}" 
-                      Margin="0,5,0,20"/>
+                <TextBlock Text="Cena wynajmu (PLN):" FontWeight="SemiBold"/>
+                <TextBox x:Name="PriceTxt" Text="{Binding PricePerDay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Width="250" HorizontalAlignment="Left" Padding="4" Margin="0,2,0,2"/>
+                <TextBlock Text="{Binding ElementName=PriceTxt, Path=(Validation.Errors)[0].ErrorContent}" Foreground="Red" FontSize="11" Margin="0,0,0,10"/>
 
-            <Button Content="Zapisz Samochód" Click="SaveButton_Click" Width="150" HorizontalAlignment="Left" Padding="8"/>
-        </StackPanel>
-    </ScrollViewer>
+                <CheckBox x:Name="AvailableChk" Content="Pojazd gotowy do wynajmu" IsChecked="{Binding IsAvailable}" Margin="0,5,0,20"/>
+
+                <Button Content="Zapisz Samochód" Click="SaveButton_Click" Width="150" HorizontalAlignment="Left" Padding="8"/>
+            </StackPanel>
+        </ScrollViewer>
+
+        <DataGrid Grid.Column="1" 
+                  ItemsSource="{Binding ListaSamochodow}" 
+                  AutoGenerateColumns="False" 
+                  IsReadOnly="True" 
+                  AlternatingRowBackground="#F0F0F0"
+                  HeadersVisibility="Column"
+                  Margin="10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="Auto"/>
+                <DataGridTextColumn Header="Marka" Binding="{Binding Make}" Width="*"/>
+                <DataGridTextColumn Header="Model" Binding="{Binding Model}" Width="*"/>
+                <DataGridTextColumn Header="Rocznik" Binding="{Binding Year}" Width="Auto"/>
+                <DataGridTextColumn Header="Rejestracja" Binding="{Binding RegistrationNumber}" Width="*"/>
+                <DataGridTextColumn Header="Cena/Dzień" Binding="{Binding PricePerDay}" Width="Auto"/>
+                <DataGridCheckBoxColumn Header="Dostępny" Binding="{Binding IsAvailable}" Width="Auto"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </Grid>
 </Page>

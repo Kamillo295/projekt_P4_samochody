@@ -3,6 +3,7 @@ using Car_Rental.ViewModels;
 using CarRental.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
+using CarRental.Services;
 
 namespace CarRental.Views
 {
@@ -13,7 +14,13 @@ namespace CarRental.Views
         public CarPage()
         {
             InitializeComponent();
-            ViewModel = new CarViewModel();
+            // 1. Tworzymy fizyczny serwis do bazy danych
+            ICarService mojSerwis = new CarService();
+
+            // 2. Przekazujemy ten serwis do ViewModelu
+            ViewModel = new CarViewModel(mojSerwis);
+
+            // 3. Przypinamy ViewModel do widoku
             this.DataContext = ViewModel;
         }
 
@@ -23,20 +30,12 @@ namespace CarRental.Views
             {
                 try
                 {
-                    // 1. Otwieramy połączenie z bazą danych
-                    using (var context = new CarRentalContext())
-                    {
-                        // 2. Dodajemy nasz sprawdzony samochód z ViewModelu do tabeli Cars
-                        context.Cars.Add(ViewModel.CarRecord);
-
-                        // 3. Wysłanie komendy zapisu do serwera SQL
-                        context.SaveChanges();
-                    }
+                    ViewModel.ZapiszSamochod();
 
                     MessageBox.Show("Samochód został pomyślnie zapisany w bazie!", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
 
                     // Czyścimy formularz przygotowując go na kolejne auto
-                    ViewModel = new CarViewModel();
+                    ViewModel = new CarViewModel(new CarService());
                     this.DataContext = ViewModel;
                 }
                 catch (Exception ex)

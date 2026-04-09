@@ -1,17 +1,46 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using CarRental.Models;
 using CarRental.Validators;
+using System.Collections.ObjectModel; // Potrzebne do ObservableCollection
+using CarRental.Services;
+using CarRental.DTOs;
 
 namespace CarRental.ViewModels
 {
     public class CarViewModel : IDataErrorInfo, INotifyPropertyChanged
     {
+        // Prywatna zmienna, w której przechowujemy "Silnik" przekazany z zewnątrz
+        private readonly ICarService _carService;
+
         public Car CarRecord { get; set; } = new Car();
+        public ObservableCollection<CarDisplayDto> ListaSamochodow {  get; set; }
 
         private List<string> _dostkietePola = new List<string>();
-
         private bool _pokazujWszystkieBledy = false;
+
+        public CarViewModel(ICarService carService)
+        {
+            _carService = carService;
+
+            ListaSamochodow = new ObservableCollection<CarDisplayDto>();
+            WczytajSamochody();
+        }
+
+        public void WczytajSamochody()
+        {
+            var samochodZBazy = _carService.GetAllCars();
+
+            ListaSamochodow.Clear();
+            foreach(var auto in samochodZBazy)
+            {
+                ListaSamochodow.Add(auto);
+            }
+        }
+
+        public void ZapiszSamochod()
+        {
+            _carService.AddCar(CarRecord);
+        }
 
         public string Make
         {
