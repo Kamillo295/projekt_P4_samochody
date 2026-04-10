@@ -6,7 +6,6 @@ using CarRental.DTOs;
 
 namespace CarRental.Services
 {
-    // Wykonuje czarną robotę z bazą danych
     public class CarService : ICarService
     {
         public void AddCar(Car car)

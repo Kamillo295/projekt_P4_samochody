@@ -1,15 +1,48 @@
 ﻿using System.ComponentModel;
 using CarRental.Models;
 using CarRental.Validators;
+using Car_Rental.Services;
+using System.Collections.ObjectModel;
 
 namespace Car_Rental.ViewModels
 {
     public class CustomerViewModel : IDataErrorInfo, INotifyPropertyChanged
     {
+        private readonly ICustomerService _customerService;
         public Customer CustomerRecord { get; set; } = new Customer();
+        public ObservableCollection<Customer> ListaKlientow {  get; set; }
 
         private List<string> _dotknietePola = new List<string>();
         private bool _pokazujWszystkieBledy = false;
+
+        public CustomerViewModel(ICustomerService customerService)
+        {
+            _customerService = customerService;
+
+            ListaKlientow = new ObservableCollection<Customer>();
+            WczytajKlientow();
+        }
+
+        public void WczytajKlientow()
+        {
+            var klientZBazy = _customerService.GetAllCustomers();
+
+            ListaKlientow.Clear();
+            foreach(var k in klientZBazy)
+            {
+                ListaKlientow.Add(k);
+            }
+        }
+
+        public void AktualizujKliena()
+        {
+            _customerService.UpadteCustomer(CustomerRecord);
+        }
+
+        public void ZapiszKlienta()
+        {
+            _customerService.AddCustomer(CustomerRecord);
+        }
 
         public string FirstName
         {

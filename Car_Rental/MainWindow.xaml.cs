@@ -18,7 +18,7 @@ namespace CarRental
 
         private void NavCustomers_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new CustomerPage());
+            MainFrame.Navigate(new CustomerListPage());
         }
 
         private void NavRentals_Click(object sender, RoutedEventArgs e)

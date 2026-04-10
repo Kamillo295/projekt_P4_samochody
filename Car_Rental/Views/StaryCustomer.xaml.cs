@@ -1,6 +1,7 @@
 ﻿using System.Windows;
-using System.Windows.Controls; // Wymagane dla obiektu Page
+using System.Windows.Controls;
 using Car_Rental.Data;
+using Car_Rental.Services;
 using Car_Rental.ViewModels;
 using CarRental.ViewModels;
 
