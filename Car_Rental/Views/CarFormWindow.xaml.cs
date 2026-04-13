@@ -24,16 +24,16 @@ namespace CarRental.Views
                 // TRYB EDYCJI: Wrzucamy przekazane auto do ViewModelu
                 ViewModel.CarRecord = carToEdit;
                 _isEditMode = true;
-                this.Title = "Edycja Samochodu";
+                Title = "Edycja Samochodu";
             }
             else
             {
                 // TRYB DODAWANIA: ViewModel ma już czyste new Car() ze swojego wnętrza
                 _isEditMode = false;
-                this.Title = "Dodaj Nowy Samochód";
+                Title = "Dodaj Nowy Samochód";
             }
 
-            this.DataContext = ViewModel;
+            DataContext = ViewModel;
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)

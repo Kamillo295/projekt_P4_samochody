@@ -16,7 +16,7 @@ namespace CarRental.Views
             InitializeComponent();
             _carService = new CarService();
             ViewModel = new CarViewModel(_carService);
-            this.DataContext = ViewModel;
+            DataContext = ViewModel;
         }
 
         private void AddCar_Click(object sender, RoutedEventArgs e)

@@ -9,12 +9,12 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
-            <Button Content="➕ Dodaj Nowy" Click="AddCar_Click" Padding="10,5" Margin="0,0,10,0"/>
-            <Button Content="✏️ Edytuj Wybrany" Click="EditCar_Click" Padding="10,5" Margin="0,0,10,0"/>
-            <Button Content="🗑️ Usuń Wybrany" Click="DeleteCar_Click" Padding="10,5" Background="#FF6B6B" Foreground="White"/>
+            <Button Content="➕ Dodaj Nowy" Click="AddCustomer_Click" Padding="10,5" Margin="0,0,10,0"/>
+            <Button Content="✏️ Edytuj Wybrany" Click="EditCustomer_Click" Padding="10,5" Margin="0,0,10,0"/>
+            <Button Content="🗑️ Usuń Wybrany" Click="DeleteCustomer_Click" Padding="10,5" Background="#FF6B6B" Foreground="White"/>
         </StackPanel>
 
-        <DataGrid x:Name="CarsDataGrid" Grid.Row="1" ItemsSource="{Binding ListaKlientow}" 
+        <DataGrid x:Name="CustomerDataGrid" Grid.Row="1" ItemsSource="{Binding ListaKlientow}" 
           AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="Auto"/>

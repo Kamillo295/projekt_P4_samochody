@@ -1,18 +1,8 @@
 ﻿using Car_Rental.Services;
 using Car_Rental.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using CarRental.Models;
 
 namespace Car_Rental.Views
 {
@@ -29,19 +19,42 @@ namespace Car_Rental.Views
             DataContext = ViewModel;
         }
 
-        private void AddCar_Click(object sender, RoutedEventArgs e)
+        private void AddCustomer_Click(object sender, RoutedEventArgs e)
         {
-
+            CustomerFormWindow okienko = new CustomerFormWindow(_customerService);
+            okienko.ShowDialog();
+            ViewModel.WczytajKlientow();
         }
 
-        private void EditCar_Click(object sender, RoutedEventArgs e)
+        private void EditCustomer_Click(object sender, RoutedEventArgs e)
         {
-
+            if (CustomerDataGrid.SelectedItem is Customer zaznaczonyKlient)
+            {
+                CustomerFormWindow okienko = new CustomerFormWindow(_customerService, zaznaczonyKlient);
+                okienko.ShowDialog();
+                ViewModel.WczytajKlientow();
+            }
+            else
+            {
+                MessageBox.Show("Wybierz Klienta z listy, aby go edytować.");
+            }
         }
 
-        private void DeleteCar_Click(object sender, RoutedEventArgs e)
+        private void DeleteCustomer_Click(object sender, RoutedEventArgs e)
         {
-
+            if (CustomerDataGrid.SelectedItem is Customer zaznaczonyKlient)
+            {
+                var odpowiedz = MessageBox.Show($"Czy na pewno chcesz usunąć {zaznaczonyKlient.FirstName} {zaznaczonyKlient.LastName}?", "Potwierdzenie", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (odpowiedz == MessageBoxResult.Yes)
+                {
+                    _customerService.DeleteCustomer(zaznaczonyKlient);
+                    ViewModel.WczytajKlientow();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Wybierz Klienta z listy, aby go edytować.");
+            }
         }
     }
 }

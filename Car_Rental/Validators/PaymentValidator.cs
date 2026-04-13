@@ -4,7 +4,6 @@ using CarRental.Models;
 
 namespace CarRental.Validators
 {
-    // Klasa sprawdzająca poprawność danych płatności
     public class PaymentValidator : AbstractValidator<Payment>
     {
         public PaymentValidator()

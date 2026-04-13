@@ -7,9 +7,8 @@ namespace CarRental.Models
         public int Id { get; set; }
         public decimal Amount { get; set; }
         public DateTime PaymentDate { get; set; }
-        public string Status { get; set; } // np. "Opłacono", "Oczekująca"
+        public string Status { get; set; } 
 
-        // Relacje: Każda płatność jest przypisana do konkretnego wynajmu
         public int RentalId { get; set; }
         public Rental Rental { get; set; }
     }

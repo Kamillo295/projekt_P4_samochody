@@ -9,7 +9,6 @@ namespace CarRental.ViewModels
 {
     public class CarViewModel : IDataErrorInfo, INotifyPropertyChanged
     {
-        // Prywatna zmienna, w której przechowujemy "Silnik" przekazany z zewnątrz
         private readonly ICarService _carService;
 
         public Car CarRecord { get; set; } = new Car();

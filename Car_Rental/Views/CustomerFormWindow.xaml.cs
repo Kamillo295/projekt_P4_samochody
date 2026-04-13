@@ -1,29 +1,60 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
+using Car_Rental.Services;
+using Car_Rental.ViewModels;
+using CarRental.Models;
 
 namespace Car_Rental.Views
-{   
+{
     public partial class CustomerFormWindow : Window
     {
-        public CustomerFormWindow()
+        public CustomerViewModel ViewModel { get; set; }
+        private bool _isEditMode;
+
+        public CustomerFormWindow(ICustomerService customerService, Customer customerToEdit = null)
         {
             InitializeComponent();
+
+            ViewModel = new CustomerViewModel(customerService);
+
+            if(customerToEdit != null )
+            {
+                ViewModel.CustomerRecord = customerToEdit;
+                _isEditMode = true;
+                Title = "Edycja Klienta";
+            }
+            else
+            {
+                _isEditMode = false;
+                Title = "Dodaj Nowego Klienta";
+            }
+
+            DataContext = ViewModel;
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if(ViewModel.Validate())
+            {
+                try
+                {
+                    if(_isEditMode)
+                    {
+                        ViewModel.AktualizujKliena();
+                        MessageBox.Show("Zaktualizowano pomyślnie!");
+                    }
+                    else
+                    {
+                        ViewModel.ZapiszKlienta();
+                        MessageBox.Show("Dodano nowego Klienta!");
+                    }
+                    DialogResult = true;
+                    Close();
+                }   
+                catch(Exception ex)
+                {
+                    MessageBox.Show($"Błąd zapisu: {ex.Message}");
+                }
+            }
         }
     }
 }

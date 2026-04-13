@@ -10,6 +10,5 @@
         public decimal PricePerDay { get; set; }
         public bool IsAvailable { get; set; }
 
-        // Zauważ: nie ma tu kolekcji Rentals!
     }
 }
