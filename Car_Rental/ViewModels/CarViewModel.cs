@@ -3,14 +3,14 @@ using CarRental.Models;
 using CarRental.Validators;
 using System.Collections.ObjectModel;
 using CarRental.Services;
-using CarRental.DTOs;
+using FluentValidation;
 
 namespace CarRental.ViewModels
 {
     public class CarViewModel : IDataErrorInfo, INotifyPropertyChanged
     {
-        // Prywatna zmienna, w której przechowujemy "Silnik" przekazany z zewnątrz
         private readonly ICarService _carService;
+        private readonly IValidator<Car> _validator;
 
         public Car CarRecord { get; set; } = new Car();
         public ObservableCollection<Car> ListaSamochodow {  get; set; }
@@ -18,9 +18,10 @@ namespace CarRental.ViewModels
         private List<string> _dostkietePola = new List<string>();
         private bool _pokazujWszystkieBledy = false;
 
-        public CarViewModel(ICarService carService)
+        public CarViewModel(ICarService carService, IValidator<Car> validator)
         {
             _carService = carService;
+            _validator = validator;
 
             ListaSamochodow = new ObservableCollection<Car>();
             WczytajSamochody();
@@ -122,8 +123,7 @@ namespace CarRental.ViewModels
             OnPropertyChanged("RegistrationNumber");
             OnPropertyChanged("PricePerDay");
 
-            CarValidator validator = new CarValidator();
-            var result = validator.Validate(CarRecord);
+            var result = _validator.Validate(CarRecord);
 
             return result.IsValid;
         }
@@ -139,8 +139,7 @@ namespace CarRental.ViewModels
                     return null;
                 }
 
-                CarValidator validator = new CarValidator();
-                var result = validator.Validate(CarRecord);
+                var result = _validator.Validate(CarRecord);
 
                 foreach (var error in result.Errors)
                 {

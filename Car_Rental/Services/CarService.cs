@@ -3,44 +3,49 @@ using System.Linq;
 using CarRental.Models;
 using Car_Rental.Data;
 using CarRental.DTOs;
+using AutoMapper;
 
-namespace CarRental.Services
+namespace CarRental.Services;
+
+public class CarService : ICarService
 {
-    public class CarService : ICarService
+    private readonly IMapper _mapper;
+    public CarService(IMapper mapper)
     {
-        public void AddCar(Car car)
+        _mapper = mapper;
+    }
+    public void AddCar(Car car)
+    {
+        using (var context = new CarRentalContext())
         {
-            using (var context = new CarRentalContext())
-            {
-                context.Cars.Add(car);
-                context.SaveChanges();
-            }
+            context.Cars.Add(car);
+            context.SaveChanges();
         }
+    }
 
-        public void UpdateCar(Car car)
+    public void UpdateCar(Car car)
+    {
+        using (var context = new CarRentalContext())
         {
-            using (var context = new CarRentalContext())
-            {
-                context.Cars.Update(car);
-                context.SaveChanges();
-            }
+            context.Cars.Update(car);
+            context.SaveChanges();
         }
+    }
 
-        public void DeleteCar(Car car)
+    public void DeleteCar(Car car)
+    {
+        using (var context = new CarRentalContext())
         {
-            using (var context = new CarRentalContext())
-            {
-                context.Cars.Remove(car);
-                context.SaveChanges();
-            }
+            context.Cars.Remove(car);
+            context.SaveChanges();
         }
+    }
 
-        public List<Car> GetAllCars()
+    public List<Car> GetAllCars()
+    {
+        using (var context = new CarRentalContext())
         {
-            using (var context = new CarRentalContext())
-            {
-                return context.Cars.ToList();
-            }
+            return context.Cars.ToList();
         }
     }
 }
