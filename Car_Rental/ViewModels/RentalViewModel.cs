@@ -1,6 +1,7 @@
 ﻿using Car_Rental.Services;
 using CarRental.Models;
 using CarRental.Services;
+using CarRental.Validators;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -8,7 +9,7 @@ using System.Linq;
 
 namespace CarRental.ViewModels
 {
-    public class RentalViewModel : INotifyPropertyChanged
+    public class RentalViewModel : INotifyPropertyChanged, IDataErrorInfo
     {
         private readonly IRentalService _rentalService;
         private readonly ICarService _carService;
@@ -18,6 +19,9 @@ namespace CarRental.ViewModels
         public ObservableCollection<Car> ListaSamochodow { get; set; }
         public ObservableCollection<Customer> ListaKlientow { get; set; }
         public ObservableCollection<Rental> ListaWynajmow { get; set; }
+
+        private List<string> _dotknietePola = new List<string>();
+        private bool _pokazujWszystkieBledy = false;
 
         public RentalViewModel(IRentalService rentalService, ICarService carService, ICustomerService customerService)
         {
@@ -39,7 +43,8 @@ namespace CarRental.ViewModels
 
         private void WczytajListyDoComboBoxow()
         {
-            var auta = _carService.GetAllCars();
+            var auta = _carService.GetAllCars().Where(a => a.IsAvailable == true).ToList();
+            ListaSamochodow.Clear();
             foreach (var auto in auta)
             {
                 if (auto.IsAvailable)
@@ -71,6 +76,7 @@ namespace CarRental.ViewModels
             set
             {
                 RentalRecord.CarId = value;
+                _dotknietePola.Add("CarId");
                 OnPropertyChanged("CarId");
                 PrzeliczCene(); 
             }
@@ -79,7 +85,11 @@ namespace CarRental.ViewModels
         public int CustomerId
         {
             get { return RentalRecord.CustomerId; }
-            set { RentalRecord.CustomerId = value; OnPropertyChanged("CustomerId"); }
+            set { 
+                    RentalRecord.CustomerId = value;
+                    _dotknietePola.Add("CustomerId");
+                    OnPropertyChanged("CustomerId"); 
+                }
         }
 
         public DateTime StartDate
@@ -88,6 +98,7 @@ namespace CarRental.ViewModels
             set
             {
                 RentalRecord.StartDate = value;
+                _dotknietePola.Add("StartDate");
                 OnPropertyChanged("StartDate");
                 PrzeliczCene(); 
             }
@@ -99,6 +110,7 @@ namespace CarRental.ViewModels
             set
             {
                 RentalRecord.EndDate = value;
+                OnPropertyChanged("EndDate");
                 OnPropertyChanged("EndDate");
                 PrzeliczCene(); 
             }
@@ -126,6 +138,48 @@ namespace CarRental.ViewModels
             else
             {
                 TotalPrice = 0;
+            }
+        }
+
+        public bool Validate()
+        {
+            _pokazujWszystkieBledy = true;
+
+            OnPropertyChanged("CarId");
+            OnPropertyChanged("CustomerId");
+            OnPropertyChanged("StartDate");
+            OnPropertyChanged("EndDate");
+            OnPropertyChanged("TotalPrice");
+
+            RentalValidator validator = new RentalValidator();
+            var result = validator.Validate(RentalRecord);
+
+            return result.IsValid;
+        }
+
+        public string Error => null;
+
+        public string this[string columnName]
+        {
+            get
+            {
+                if (_pokazujWszystkieBledy == false && _dotknietePola.Contains(columnName) == false)
+                {
+                    return null;
+                }
+
+                RentalValidator validator = new RentalValidator();
+                var result = validator.Validate(RentalRecord);
+
+                foreach (var error in result.Errors)
+                {
+                    if (error.PropertyName == columnName)
+                    {
+                        return error.ErrorMessage;
+                    }
+                }
+
+                return null;
             }
         }
 

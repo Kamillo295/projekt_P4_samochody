@@ -1,10 +1,5 @@
 ﻿using Car_Rental.Data;
 using CarRental.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Car_Rental.Services
 {
@@ -16,7 +11,7 @@ namespace Car_Rental.Services
             {
                 context.Add(rental);
 
-                var autoDoWynajęcia = context.Cars.FirstOrDefault(c =>  c.Id == rental.Id);
+                var autoDoWynajęcia = context.Cars.FirstOrDefault(c => c.Id == rental.CarId);
                 if(autoDoWynajęcia != null)
                 {
                     autoDoWynajęcia.IsAvailable = false;

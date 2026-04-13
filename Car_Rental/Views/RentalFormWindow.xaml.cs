@@ -19,25 +19,24 @@ namespace CarRental.Views
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            try
+            // Teraz odpali się nasza nowa metoda sprawdzająca daty i puste pola!
+            if (ViewModel.Validate())
             {
-                // Tutaj sprawdzamy, czy wybrano auto i klienta
-                if (ViewModel.CarId == 0 || ViewModel.CustomerId == 0)
+                try
                 {
-                    MessageBox.Show("Musisz wybrać klienta oraz samochód!", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
+                    ViewModel.ZapiszWynajem();
+                    MessageBox.Show("Wynajem został zapisany! Samochód jest teraz niedostępny.", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
+                    this.DialogResult = true;
+                    this.Close();
                 }
-
-                ViewModel.ZapiszWynajem();
-
-                MessageBox.Show("Wynajem został zapisany! Samochód jest teraz niedostępny dla innych.", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                this.DialogResult = true;
-                this.Close();
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Wystąpił błąd: {ex.Message}");
+                }
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show($"Wystąpił błąd: {ex.Message}");
+                MessageBox.Show("Formularz zawiera błędy. Sprawdź czerwone komunikaty.", "Błąd Walidacji", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
     }
