@@ -2,7 +2,7 @@
 using CarRental.DTOs;
 using CarRental.Models;
 
-namespace Car_Rental.DTO
+namespace CarRental.Profiles   // spójna i czytelna przestrzeń nazw
 {
     public class MappingProfile : Profile
     {

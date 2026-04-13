@@ -2,9 +2,9 @@
 using System.Windows;
 using CarRental.ViewModels;
 using CarRental.Services;
-using CarRental.Models;
+using CarRental.DTOs;
 using FluentValidation;
-using CarRental.Validators;
+using AutoMapper;
 
 namespace CarRental.Views
 {
@@ -13,26 +13,21 @@ namespace CarRental.Views
         public CarViewModel ViewModel { get; set; }
         private bool _isEditMode;
 
-        // Konstruktor przyjmuje Serwis oraz (opcjonalnie) Samochód do edycji
-        public CarFormWindow(ICarService carService, Car carToEdit = null)
+        // Przyjmujemy wszystkie niezbędne serwisy i opcjonalne DTO
+        public CarFormWindow(ICarService carService, IValidator<CarDto> validator, IMapper mapper, CarDto carToEdit = null)
         {
             InitializeComponent();
 
-            // Tworzymy ViewModel i dajemy mu serwis
-            IValidator<Car> carValidator = new CarValidator();
-
-            ViewModel = new CarViewModel(carService, carValidator);
+            ViewModel = new CarViewModel(carService, validator, mapper);
 
             if (carToEdit != null)
             {
-                // TRYB EDYCJI: Wrzucamy przekazane auto do ViewModelu
                 ViewModel.CarRecord = carToEdit;
                 _isEditMode = true;
                 Title = "Edycja Samochodu";
             }
             else
             {
-                // TRYB DODAWANIA: ViewModel ma już czyste new Car() ze swojego wnętrza
                 _isEditMode = false;
                 Title = "Dodaj Nowy Samochód";
             }
@@ -46,10 +41,8 @@ namespace CarRental.Views
             {
                 try
                 {
-                    // W zależności od trybu, dodajemy lub aktualizujemy
                     if (_isEditMode)
                     {
-                        // Dodaj metodę UpdateCar do swojego CarViewModel! (Wywoła ona _carService.UpdateCar(CarRecord))
                         ViewModel.AktualizujSamochod();
                         MessageBox.Show("Zaktualizowano pomyślnie!");
                     }
@@ -59,7 +52,6 @@ namespace CarRental.Views
                         MessageBox.Show("Dodano nowy samochód!");
                     }
 
-                    // Po udanym zapisie ZAMYKAMY to małe okienko
                     this.DialogResult = true;
                     this.Close();
                 }

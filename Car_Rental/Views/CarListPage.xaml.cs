@@ -2,47 +2,51 @@
 using System.Windows.Controls;
 using CarRental.ViewModels;
 using CarRental.Services;
-using CarRental.Models;
-using FluentValidation;
+using CarRental.DTOs;
 using CarRental.Validators;
+using FluentValidation;
+using AutoMapper;
 
 namespace CarRental.Views
 {
     public partial class CarListPage : Page
     {
+        private readonly IMapper _mapper;
         public CarViewModel ViewModel { get; set; }
         private readonly ICarService _carService;
-        private readonly IValidator<Car> _carValidator;z
+        private readonly IValidator<CarDto> _carValidator;
+
 
         public CarListPage()
         {
             InitializeComponent();
-            _carService = new CarService();
 
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<MappingProfile>();
+            });
+            _mapper = config.CreateMapper();
+
+
+            _carService = new CarService(_mapper);
             _carValidator = new CarValidator();
-            ViewModel = new CarViewModel(_carService, _carValidator);
+
+            ViewModel = new CarViewModel(_carService, _carValidator, _mapper);
             this.DataContext = ViewModel;
         }
 
         private void AddCar_Click(object sender, RoutedEventArgs e)
         {
-            // 1. Otwieramy nasze nowe okienko formularza w trybie DODAWANIA (nie dajemy auta)
-            CarFormWindow okienko = new CarFormWindow(_carService);
-
-            // 2. Program czeka w tej linijce, aż zamkniesz okienko!
+            CarFormWindow okienko = new CarFormWindow(_carService, _carValidator, _mapper);
             okienko.ShowDialog();
-
-            // 3. Po zamknięciu okienka, odświeżamy tabelę
             ViewModel.WczytajSamochody();
         }
 
         private void EditCar_Click(object sender, RoutedEventArgs e)
         {
-            // Sprawdzamy, czy użytkownik zaznaczył coś w tabeli
-            if (CarsDataGrid.SelectedItem is Car zaznaczoneAuto)
+            if (CarsDataGrid.SelectedItem is CarDto zaznaczoneAuto)
             {
-                // Otwieramy okienko w trybie EDYCJI (przekazujemy zaznaczoneAuto)
-                CarFormWindow okienko = new CarFormWindow(_carService, zaznaczoneAuto);
+                CarFormWindow okienko = new CarFormWindow(_carService, _carValidator, _mapper, zaznaczoneAuto);
                 okienko.ShowDialog();
                 ViewModel.WczytajSamochody();
             }
@@ -54,10 +58,9 @@ namespace CarRental.Views
 
         private void DeleteCar_Click(object sender, RoutedEventArgs e)
         {
-            if (CarsDataGrid.SelectedItem is Car zaznaczoneAuto)
+            if (CarsDataGrid.SelectedItem is CarDto zaznaczoneAuto)
             {
                 var odpowiedz = MessageBox.Show($"Czy na pewno chcesz usunąć {zaznaczoneAuto.Make}?", "Potwierdzenie", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-
                 if (odpowiedz == MessageBoxResult.Yes)
                 {
                     _carService.DeleteCar(zaznaczoneAuto);

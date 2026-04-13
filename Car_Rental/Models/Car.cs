@@ -14,6 +14,6 @@ namespace CarRental.Models
 
         public ICollection<Rental> Rentals { get; set; } = new List<Rental>();
 
-        public string FullName => $"{Make} {Model}";
+       public string FullName => $"{Make} {Model}";
     }
 }

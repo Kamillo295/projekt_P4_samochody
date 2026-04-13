@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
-using CarRental.Models;
+using CarRental.DTOs;
 
 namespace CarRental.Validators
 {
-    public class CarValidator : AbstractValidator<Car>
+    public class CarValidator : AbstractValidator<CarDto>
     {
         public CarValidator()
         {

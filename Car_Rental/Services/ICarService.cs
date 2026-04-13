@@ -1,12 +1,12 @@
 ﻿using CarRental.Models;
+using CarRental.DTOs;
 
-namespace CarRental.Services
+namespace CarRental.Services;
+
+public interface ICarService
 {
-    public interface ICarService
-    {
-        void AddCar(Car car);
-        void UpdateCar(Car car);
-        void DeleteCar(Car car);
-        List<Car> GetAllCars();
-    }
+    void AddCar(CarDto car);
+    void UpdateCar(CarDto car);
+    void DeleteCar(CarDto car);
+    List<CarDto> GetAllCars();
 }

@@ -1,4 +1,5 @@
 ﻿using Car_Rental.Services;
+using CarRental.DTOs;
 using CarRental.Models;
 using CarRental.Services;
 using CarRental.Validators;
@@ -16,7 +17,7 @@ namespace CarRental.ViewModels
         private readonly ICustomerService _customerService;
 
         public Rental RentalRecord { get; set; } = new Rental();
-        public ObservableCollection<Car> ListaSamochodow { get; set; }
+        public ObservableCollection<CarDto> ListaSamochodow { get; set; }
         public ObservableCollection<Customer> ListaKlientow { get; set; }
         public ObservableCollection<Rental> ListaWynajmow { get; set; }
 
@@ -29,7 +30,7 @@ namespace CarRental.ViewModels
             _carService = carService;
             _customerService = customerService;
 
-            ListaSamochodow = new ObservableCollection<Car>();
+            ListaSamochodow = new ObservableCollection<CarDto>();
             ListaKlientow = new ObservableCollection<Customer>();
             ListaWynajmow = new ObservableCollection<Rental>();
 
