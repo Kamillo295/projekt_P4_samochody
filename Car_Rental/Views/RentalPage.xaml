@@ -19,11 +19,21 @@
             <TextBlock Text="{Binding ElementName=EndDatePicker, Path=(Validation.Errors)[0].ErrorContent}" Foreground="Red" FontSize="11" Margin="0,0,0,10"/>
 
             <TextBlock Text="Wybierz Samochód:" Margin="0,0,0,5" FontWeight="SemiBold"/>
-            <ComboBox x:Name="CarComboBox" SelectedValue="{Binding CarId, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Id" DisplayMemberPath="Make" Width="300" HorizontalAlignment="Left" Height="25" Margin="0,0,0,2"/>
-            <TextBlock Text="{Binding ElementName=CarComboBox, Path=(Validation.Errors)[0].ErrorContent}" Foreground="Red" FontSize="11" Margin="0,0,0,10"/>
+            <TextBlock Text="Wybierz Samochód:" FontWeight="SemiBold" Margin="0,0,0,5"/>
+            <ComboBox x:Name="CarComboBox" 
+          ItemsSource="{Binding ListaSamochodow}" 
+          SelectedValue="{Binding CarId, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" 
+          SelectedValuePath="Id" 
+          DisplayMemberPath="Make" 
+          Margin="0,0,0,2" Padding="5"/>
 
-            <TextBlock Text="Wybierz Klienta:" Margin="0,0,0,5" FontWeight="SemiBold"/>
-            <ComboBox x:Name="CustomerComboBox" SelectedValue="{Binding CustomerId, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Id" DisplayMemberPath="LastName" Width="300" HorizontalAlignment="Left" Height="25" Margin="0,0,0,2"/>
+            <TextBlock Text="Wybierz Klienta:" FontWeight="SemiBold" Margin="0,0,0,5"/>
+            <ComboBox x:Name="CustomerComboBox" 
+          ItemsSource="{Binding ListaKlientow}" 
+          SelectedValue="{Binding CustomerId, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" 
+          SelectedValuePath="Id" 
+          DisplayMemberPath="LastName" 
+          Margin="0,0,0,2" Padding="5"/>
             <TextBlock Text="{Binding ElementName=CustomerComboBox, Path=(Validation.Errors)[0].ErrorContent}" Foreground="Red" FontSize="11" Margin="0,0,0,10"/>
 
             <TextBlock Text="Całkowita cena (PLN):" Margin="0,0,0,5" FontWeight="SemiBold"/>

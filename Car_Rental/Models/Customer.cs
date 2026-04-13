@@ -11,7 +11,8 @@ namespace CarRental.Models
         public string Email { get; set; }
         public string DrivingLicenseNumber { get; set; }
 
-        // Relacja: Jeden klient może mieć wiele wypożyczeń
         public ICollection<Rental> Rentals { get; set; } = new List<Rental>();
+
+        public string FullName => $"{FirstName} {LastName}";
     }
 }

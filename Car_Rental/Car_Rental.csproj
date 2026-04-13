@@ -9,11 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\RentalPage.xaml.cs" />
     <Compile Remove="Views\StaryCar.xaml.cs" />
     <Compile Remove="Views\StaryCustomer.xaml.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <Page Remove="Views\RentalPage.xaml" />
     <Page Remove="Views\StaryCar.xaml" />
     <Page Remove="Views\StaryCustomer.xaml" />
   </ItemGroup>

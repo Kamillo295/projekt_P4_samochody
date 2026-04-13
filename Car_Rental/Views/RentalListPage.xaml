@@ -1,0 +1,29 @@
+﻿<Page x:Class="Car_Rental.Views.RentalListPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Lista Wynajmów">
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+            <Button Content="➕ Nowy Wynajem" Click="AddRental_Click" Padding="10,5" Margin="0,0,10,0" Background="#2ECC71" Foreground="White" FontWeight="Bold"/>
+            <Button Content="Zwróć Pojazd (Zakończ Wynajem)" Click="ReturnCar_Click" Padding="10,5" Background="#E74C3C" Foreground="White" FontWeight="Bold"/>
+        </StackPanel>
+
+        <DataGrid x:Name="RentalsDataGrid" Grid.Row="1" ItemsSource="{Binding ListaWynajmow}" 
+                  AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" AlternatingRowBackground="#F0F0F0">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID Wynajmu" Binding="{Binding Id}" Width="Auto"/>
+                <DataGridTextColumn Header="ID Auta" Binding="{Binding CarId}" Width="Auto"/>
+                <DataGridTextColumn Header="ID Klienta" Binding="{Binding CustomerId}" Width="Auto"/>
+                <DataGridTextColumn Header="Data Startu" Binding="{Binding StartDate, StringFormat=d}" Width="*"/>
+                <DataGridTextColumn Header="Data Końca" Binding="{Binding EndDate, StringFormat=d}" Width="*"/>
+                <DataGridTextColumn Header="Całkowity Koszt (PLN)" Binding="{Binding TotalPrice}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Page>

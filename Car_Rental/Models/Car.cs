@@ -12,7 +12,8 @@ namespace CarRental.Models
         public decimal PricePerDay { get; set; }
         public bool IsAvailable { get; set; }
 
-        // Relacja: Jeden samochód może mieć wiele historii wynajmu
         public ICollection<Rental> Rentals { get; set; } = new List<Rental>();
+
+        public string FullName => $"{Make} {Model}";
     }
 }
