@@ -12,5 +12,7 @@ namespace CarRental.Models
         public string DrivingLicenseNumber { get; set; }
 
         public ICollection<Rental> Rentals { get; set; } = new List<Rental>();
+
+        public string FullName => $"{FirstName} {LastName}";
     }
 }

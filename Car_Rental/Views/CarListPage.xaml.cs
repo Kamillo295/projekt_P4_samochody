@@ -3,6 +3,8 @@ using System.Windows.Controls;
 using CarRental.ViewModels;
 using CarRental.Services;
 using CarRental.Models;
+using FluentValidation;
+using CarRental.Validators;
 
 namespace CarRental.Views
 {
@@ -10,13 +12,16 @@ namespace CarRental.Views
     {
         public CarViewModel ViewModel { get; set; }
         private readonly ICarService _carService;
+        private readonly IValidator<Car> _carValidator;z
 
         public CarListPage()
         {
             InitializeComponent();
             _carService = new CarService();
-            ViewModel = new CarViewModel(_carService);
-            DataContext = ViewModel;
+
+            _carValidator = new CarValidator();
+            ViewModel = new CarViewModel(_carService, _carValidator);
+            this.DataContext = ViewModel;
         }
 
         private void AddCar_Click(object sender, RoutedEventArgs e)

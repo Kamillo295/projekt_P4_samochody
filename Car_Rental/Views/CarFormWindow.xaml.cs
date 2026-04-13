@@ -3,6 +3,8 @@ using System.Windows;
 using CarRental.ViewModels;
 using CarRental.Services;
 using CarRental.Models;
+using FluentValidation;
+using CarRental.Validators;
 
 namespace CarRental.Views
 {
@@ -17,7 +19,9 @@ namespace CarRental.Views
             InitializeComponent();
 
             // Tworzymy ViewModel i dajemy mu serwis
-            ViewModel = new CarViewModel(carService);
+            IValidator<Car> carValidator = new CarValidator();
+
+            ViewModel = new CarViewModel(carService, carValidator);
 
             if (carToEdit != null)
             {

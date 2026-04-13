@@ -23,7 +23,7 @@ namespace CarRental
 
         private void NavRentals_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new RentalPage());
+            MainFrame.Navigate(new RentalListPage());
         }
     }
 }
