@@ -1,12 +1,11 @@
-﻿using CarRental.Models;
+﻿using CarRental.DTOs;
 
-namespace Car_Rental.Services
+namespace Car_Rental.Services;
+
+public interface ICustomerService
 {
-    public interface ICustomerService
-    {
-        void AddCustomer(Customer customer);
-        void UpadteCustomer(Customer customer);
-        void DeleteCustomer(Customer customer);
-        List<Customer> GetAllCustomers();
-    }
+    void AddCustomer(CustomerDto customer);
+    void UpdateCustomer(CustomerDto customer);
+    void DeleteCustomer(CustomerDto customer);
+    List<CustomerDto> GetAllCustomers();
 }

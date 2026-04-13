@@ -1,115 +1,115 @@
 ﻿using System.ComponentModel;
-using CarRental.Models;
-using CarRental.Validators;
-using Car_Rental.Services;
 using System.Collections.ObjectModel;
+using CarRental.DTOs;
+using Car_Rental.Services;
+using FluentValidation;
 
-namespace Car_Rental.ViewModels
+namespace Car_Rental.ViewModels;
+
+public class CustomerViewModel : IDataErrorInfo, INotifyPropertyChanged
 {
-    public class CustomerViewModel : IDataErrorInfo, INotifyPropertyChanged
+    private readonly ICustomerService _customerService;
+    private readonly IValidator<CustomerDto> _validator;
+
+    public CustomerDto CustomerRecord { get; set; } = new CustomerDto();
+    public ObservableCollection<CustomerDto> ListaKlientow { get; set; }
+
+    private List<string> _dotknietePola = new List<string>();
+    private bool _pokazujWszystkieBledy = false;
+
+    public CustomerViewModel(ICustomerService customerService, IValidator<CustomerDto> validator)
     {
-        private readonly ICustomerService _customerService;
-        public Customer CustomerRecord { get; set; } = new Customer();
-        public ObservableCollection<Customer> ListaKlientow {  get; set; }
+        _customerService = customerService;
+        _validator = validator;
 
-        private List<string> _dotknietePola = new List<string>();
-        private bool _pokazujWszystkieBledy = false;
+        ListaKlientow = new ObservableCollection<CustomerDto>();
+        WczytajKlientow();
+    }
 
-        public CustomerViewModel(ICustomerService customerService)
+    public void WczytajKlientow()
+    {
+        var klienciZBazy = _customerService.GetAllCustomers();
+
+        ListaKlientow.Clear();
+        foreach (var k in klienciZBazy)
         {
-            _customerService = customerService;
-
-            ListaKlientow = new ObservableCollection<Customer>();
-            WczytajKlientow();
+            ListaKlientow.Add(k);
         }
+    }
 
-        public void WczytajKlientow()
+    public void AktualizujKlienta()
+    {
+        _customerService.UpdateCustomer(CustomerRecord);
+    }
+
+    public void ZapiszKlienta()
+    {
+        _customerService.AddCustomer(CustomerRecord);
+    }
+
+    public string FirstName
+    {
+        get { return CustomerRecord.FirstName; }
+        set { CustomerRecord.FirstName = value; _dotknietePola.Add("FirstName"); OnPropertyChanged("FirstName"); }
+    }
+
+    public string LastName
+    {
+        get { return CustomerRecord.LastName; }
+        set { CustomerRecord.LastName = value; _dotknietePola.Add("LastName"); OnPropertyChanged("LastName"); }
+    }
+
+    public string Email
+    {
+        get { return CustomerRecord.Email; }
+        set { CustomerRecord.Email = value; _dotknietePola.Add("Email"); OnPropertyChanged("Email"); }
+    }
+
+    public string PhoneNumber
+    {
+        get { return CustomerRecord.PhoneNumber; }
+        set { CustomerRecord.PhoneNumber = value; _dotknietePola.Add("PhoneNumber"); OnPropertyChanged("PhoneNumber"); }
+    }
+
+    public string DrivingLicenseNumber
+    {
+        get { return CustomerRecord.DrivingLicenseNumber; }
+        set { CustomerRecord.DrivingLicenseNumber = value; _dotknietePola.Add("DrivingLicenseNumber"); OnPropertyChanged("DrivingLicenseNumber"); }
+    }
+
+    public bool Validate()
+    {
+        _pokazujWszystkieBledy = true;
+        OnPropertyChanged("FirstName");
+        OnPropertyChanged("LastName");
+        OnPropertyChanged("Email");
+        OnPropertyChanged("PhoneNumber");
+        OnPropertyChanged("DrivingLicenseNumber");
+
+        var result = _validator.Validate(CustomerRecord);
+        return result.IsValid;
+    }
+
+    public string Error => null;
+    public string this[string columnName]
+    {
+        get
         {
-            var klientZBazy = _customerService.GetAllCustomers();
+            if (!_pokazujWszystkieBledy && !_dotknietePola.Contains(columnName)) return null;
 
-            ListaKlientow.Clear();
-            foreach(var k in klientZBazy)
+            var result = _validator.Validate(CustomerRecord);
+
+            foreach (var error in result.Errors)
             {
-                ListaKlientow.Add(k);
+                if (error.PropertyName == columnName) return error.ErrorMessage;
             }
+            return null;
         }
+    }
 
-        public void AktualizujKliena()
-        {
-            _customerService.UpadteCustomer(CustomerRecord);
-        }
-
-        public void ZapiszKlienta()
-        {
-            _customerService.AddCustomer(CustomerRecord);
-        }
-
-        public string FirstName
-        {
-            get { return CustomerRecord.FirstName; }
-            set { CustomerRecord.FirstName = value; _dotknietePola.Add("FirstName"); OnPropertyChanged("FirstName"); }
-        }
-
-        public string LastName
-        {
-            get { return CustomerRecord.LastName; }
-            set { CustomerRecord.LastName = value; _dotknietePola.Add("LastName"); OnPropertyChanged("LastName"); }
-        }
-
-        public string Email
-        {
-            get { return CustomerRecord.Email; }
-            set { CustomerRecord.Email = value; _dotknietePola.Add("Email"); OnPropertyChanged("Email"); }
-        }
-
-        public string PhoneNumber
-        {
-            get { return CustomerRecord.PhoneNumber; }
-            set { CustomerRecord.PhoneNumber = value; _dotknietePola.Add("PhoneNumber"); OnPropertyChanged("PhoneNumber"); }
-        }
-
-        public string DrivingLicenseNumber
-        {
-            get { return CustomerRecord.DrivingLicenseNumber; }
-            set { CustomerRecord.DrivingLicenseNumber = value; _dotknietePola.Add("DrivingLicenseNumber"); OnPropertyChanged("DrivingLicenseNumber"); }
-        }
-
-        public bool Validate()
-        {
-            _pokazujWszystkieBledy = true;
-            OnPropertyChanged("FirstName");
-            OnPropertyChanged("LastName");
-            OnPropertyChanged("Email");
-            OnPropertyChanged("PhoneNumber");
-            OnPropertyChanged("DrivingLicenseNumber");
-
-            CustomerValidator validator = new CustomerValidator();
-            var result = validator.Validate(CustomerRecord);
-            return result.IsValid;
-        }
-
-        public string Error => null;
-        public string this[string columnName]
-        {
-            get
-            {
-                if (!_pokazujWszystkieBledy && !_dotknietePola.Contains(columnName)) return null;
-
-                CustomerValidator validator = new CustomerValidator();
-                var result = validator.Validate(CustomerRecord);
-
-                foreach (var error in result.Errors)
-                {
-                    if (error.PropertyName == columnName) return error.ErrorMessage;
-                }
-                return null;
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+    public event PropertyChangedEventHandler PropertyChanged;
+    protected void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

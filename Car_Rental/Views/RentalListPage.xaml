@@ -18,11 +18,11 @@
                   AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" AlternatingRowBackground="#F0F0F0">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID Wynajmu" Binding="{Binding Id}" Width="Auto"/>
-                <DataGridTextColumn Header="ID Auta" Binding="{Binding CarId}" Width="Auto"/>
-                <DataGridTextColumn Header="ID Klienta" Binding="{Binding CustomerId}" Width="Auto"/>
-                <DataGridTextColumn Header="Data Startu" Binding="{Binding StartDate, StringFormat=d}" Width="*"/>
-                <DataGridTextColumn Header="Data Końca" Binding="{Binding EndDate, StringFormat=d}" Width="*"/>
-                <DataGridTextColumn Header="Całkowity Koszt (PLN)" Binding="{Binding TotalPrice}" Width="*"/>
+                <DataGridTextColumn Header="Samochód" Binding="{Binding CarFullName}" Width="*"/>
+                <DataGridTextColumn Header="Klient" Binding="{Binding CustomerFullName}" Width="*"/>
+                <DataGridTextColumn Header="Data Startu" Binding="{Binding StartDate, StringFormat=d}" Width="Auto"/>
+                <DataGridTextColumn Header="Data Końca" Binding="{Binding EndDate, StringFormat=d}" Width="Auto"/>
+                <DataGridTextColumn Header="Całkowity Koszt (PLN)" Binding="{Binding TotalPrice}" Width="Auto"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

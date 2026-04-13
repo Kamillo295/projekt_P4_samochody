@@ -1,59 +1,59 @@
 ﻿using System.Windows;
 using Car_Rental.Services;
 using Car_Rental.ViewModels;
-using CarRental.Models;
+using CarRental.DTOs; 
+using FluentValidation; 
 
-namespace Car_Rental.Views
+namespace Car_Rental.Views;
+
+public partial class CustomerFormWindow : Window
 {
-    public partial class CustomerFormWindow : Window
+    public CustomerViewModel ViewModel { get; set; }
+    private bool _isEditMode;
+
+    public CustomerFormWindow(ICustomerService customerService, IValidator<CustomerDto> validator, CustomerDto customerToEdit = null)
     {
-        public CustomerViewModel ViewModel { get; set; }
-        private bool _isEditMode;
+        InitializeComponent();
 
-        public CustomerFormWindow(ICustomerService customerService, Customer customerToEdit = null)
+        ViewModel = new CustomerViewModel(customerService, validator);
+
+        if (customerToEdit != null)
         {
-            InitializeComponent();
-
-            ViewModel = new CustomerViewModel(customerService);
-
-            if(customerToEdit != null )
-            {
-                ViewModel.CustomerRecord = customerToEdit;
-                _isEditMode = true;
-                Title = "Edycja Klienta";
-            }
-            else
-            {
-                _isEditMode = false;
-                Title = "Dodaj Nowego Klienta";
-            }
-
-            DataContext = ViewModel;
+            ViewModel.CustomerRecord = customerToEdit;
+            _isEditMode = true;
+            Title = "Edycja Klienta";
+        }
+        else
+        {
+            _isEditMode = false;
+            Title = "Dodaj Nowego Klienta";
         }
 
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        DataContext = ViewModel;
+    }
+
+    private void SaveButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (ViewModel.Validate())
         {
-            if(ViewModel.Validate())
+            try
             {
-                try
+                if (_isEditMode)
                 {
-                    if(_isEditMode)
-                    {
-                        ViewModel.AktualizujKliena();
-                        MessageBox.Show("Zaktualizowano pomyślnie!");
-                    }
-                    else
-                    {
-                        ViewModel.ZapiszKlienta();
-                        MessageBox.Show("Dodano nowego Klienta!");
-                    }
-                    DialogResult = true;
-                    Close();
-                }   
-                catch(Exception ex)
-                {
-                    MessageBox.Show($"Błąd zapisu: {ex.Message}");
+                    ViewModel.AktualizujKlienta();
+                    MessageBox.Show("Zaktualizowano pomyślnie!");
                 }
+                else
+                {
+                    ViewModel.ZapiszKlienta();
+                    MessageBox.Show("Dodano nowego Klienta!");
+                }
+                DialogResult = true;
+                Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Błąd zapisu: {ex.Message}");
             }
         }
     }

@@ -1,12 +1,9 @@
 ﻿using Car_Rental.Services;
 using CarRental.DTOs;
-using CarRental.Models;
 using CarRental.Services;
-using CarRental.Validators;
-using System;
+using FluentValidation; 
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 
 namespace CarRental.ViewModels
 {
@@ -15,24 +12,26 @@ namespace CarRental.ViewModels
         private readonly IRentalService _rentalService;
         private readonly ICarService _carService;
         private readonly ICustomerService _customerService;
+        private readonly IValidator<RentalDto> _validator; 
 
-        public Rental RentalRecord { get; set; } = new Rental();
+        public RentalDto RentalRecord { get; set; } = new RentalDto();
         public ObservableCollection<CarDto> ListaSamochodow { get; set; }
-        public ObservableCollection<Customer> ListaKlientow { get; set; }
-        public ObservableCollection<Rental> ListaWynajmow { get; set; }
+        public ObservableCollection<CustomerDto> ListaKlientow { get; set; }
+        public ObservableCollection<RentalDto> ListaWynajmow { get; set; }
 
         private List<string> _dotknietePola = new List<string>();
         private bool _pokazujWszystkieBledy = false;
 
-        public RentalViewModel(IRentalService rentalService, ICarService carService, ICustomerService customerService)
+        public RentalViewModel(IRentalService rentalService, ICarService carService, ICustomerService customerService, IValidator<RentalDto> validator)
         {
             _rentalService = rentalService;
             _carService = carService;
             _customerService = customerService;
+            _validator = validator;
 
             ListaSamochodow = new ObservableCollection<CarDto>();
-            ListaKlientow = new ObservableCollection<Customer>();
-            ListaWynajmow = new ObservableCollection<Rental>();
+            ListaKlientow = new ObservableCollection<CustomerDto>(); 
+            ListaWynajmow = new ObservableCollection<RentalDto>();
 
             RentalRecord.StartDate = DateTime.Today;
             RentalRecord.EndDate = DateTime.Today.AddDays(1);
@@ -48,13 +47,11 @@ namespace CarRental.ViewModels
             ListaSamochodow.Clear();
             foreach (var auto in auta)
             {
-                if (auto.IsAvailable)
-                {
-                    ListaSamochodow.Add(auto);
-                }
+                ListaSamochodow.Add(auto);
             }
 
             var klienci = _customerService.GetAllCustomers();
+            ListaKlientow.Clear();
             foreach (var klient in klienci)
             {
                 ListaKlientow.Add(klient);
@@ -79,18 +76,19 @@ namespace CarRental.ViewModels
                 RentalRecord.CarId = value;
                 _dotknietePola.Add("CarId");
                 OnPropertyChanged("CarId");
-                PrzeliczCene(); 
+                PrzeliczCene();
             }
         }
 
         public int CustomerId
         {
             get { return RentalRecord.CustomerId; }
-            set { 
-                    RentalRecord.CustomerId = value;
-                    _dotknietePola.Add("CustomerId");
-                    OnPropertyChanged("CustomerId"); 
-                }
+            set
+            {
+                RentalRecord.CustomerId = value;
+                _dotknietePola.Add("CustomerId");
+                OnPropertyChanged("CustomerId");
+            }
         }
 
         public DateTime StartDate
@@ -101,7 +99,7 @@ namespace CarRental.ViewModels
                 RentalRecord.StartDate = value;
                 _dotknietePola.Add("StartDate");
                 OnPropertyChanged("StartDate");
-                PrzeliczCene(); 
+                PrzeliczCene();
             }
         }
 
@@ -111,9 +109,9 @@ namespace CarRental.ViewModels
             set
             {
                 RentalRecord.EndDate = value;
+                _dotknietePola.Add("EndDate");
                 OnPropertyChanged("EndDate");
-                OnPropertyChanged("EndDate");
-                PrzeliczCene(); 
+                PrzeliczCene();
             }
         }
 
@@ -122,6 +120,7 @@ namespace CarRental.ViewModels
             get { return RentalRecord.TotalPrice; }
             set { RentalRecord.TotalPrice = value; OnPropertyChanged("TotalPrice"); }
         }
+
         private void PrzeliczCene()
         {
             if (CarId > 0 && EndDate > StartDate)
@@ -131,7 +130,7 @@ namespace CarRental.ViewModels
                 if (wybraneAuto != null)
                 {
                     int dni = (EndDate - StartDate).Days;
-                    if (dni <= 0) dni = 1; 
+                    if (dni <= 0) dni = 1;
 
                     TotalPrice = dni * wybraneAuto.PricePerDay;
                 }
@@ -152,8 +151,7 @@ namespace CarRental.ViewModels
             OnPropertyChanged("EndDate");
             OnPropertyChanged("TotalPrice");
 
-            RentalValidator validator = new RentalValidator();
-            var result = validator.Validate(RentalRecord);
+            var result = _validator.Validate(RentalRecord);
 
             return result.IsValid;
         }
@@ -169,8 +167,7 @@ namespace CarRental.ViewModels
                     return null;
                 }
 
-                RentalValidator validator = new RentalValidator();
-                var result = validator.Validate(RentalRecord);
+                var result = _validator.Validate(RentalRecord);
 
                 foreach (var error in result.Errors)
                 {

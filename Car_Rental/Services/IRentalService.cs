@@ -1,11 +1,10 @@
-﻿using CarRental.Models;
+﻿using CarRental.DTOs;
 
-namespace Car_Rental.Services
+namespace Car_Rental.Services;
+
+public interface IRentalService
 {
-    public interface IRentalService
-    {
-        void AddRental(Rental rental);
-        List<Rental> GetAllRentals();
-        void DeleteRental(Rental rental);
-    }
+    void AddRental(RentalDto rental);
+    List<RentalDto> GetAllRentals();
+    void DeleteRental(RentalDto rental);
 }

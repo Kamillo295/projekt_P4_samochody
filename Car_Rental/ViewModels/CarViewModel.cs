@@ -12,7 +12,6 @@ public class CarViewModel : IDataErrorInfo, INotifyPropertyChanged
 {
     private readonly ICarService _carService;
     private readonly IValidator<CarDto> _validator;
-    private readonly IMapper _mapper;
 
     public CarDto CarRecord { get; set; } = new CarDto();
     public ObservableCollection<CarDto> ListaSamochodow { get; set; }
@@ -20,11 +19,10 @@ public class CarViewModel : IDataErrorInfo, INotifyPropertyChanged
     private List<string> _dotknietePola = new List<string>();
     private bool _pokazujWszystkieBledy = false;
 
-    public CarViewModel(ICarService carService, IValidator<CarDto> validator, IMapper mapper)
+    public CarViewModel(ICarService carService, IValidator<CarDto> validator)
     {
         _carService = carService;
         _validator = validator;
-        _mapper = mapper;
 
         ListaSamochodow = new ObservableCollection<CarDto>();
         WczytajSamochody();

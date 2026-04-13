@@ -1,6 +1,6 @@
-﻿namespace CarRental.Models;
+﻿namespace CarRental.DTOs;
 
-public class Customer
+public class CustomerDto
 {
     public int Id { get; set; }
     public string FirstName { get; set; }
@@ -9,5 +9,5 @@ public class Customer
     public string Email { get; set; }
     public string DrivingLicenseNumber { get; set; }
 
-    public ICollection<Rental> Rentals { get; set; } = new List<Rental>();
+    public string FullName {  get; set; }
 }

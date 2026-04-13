@@ -6,71 +6,69 @@ using CarRental.DTOs;
 using CarRental.Validators;
 using FluentValidation;
 using AutoMapper;
+using CarRental.Profiles;
 
-namespace CarRental.Views
+namespace CarRental.Views;
+
+public partial class CarListPage : Page
 {
-    public partial class CarListPage : Page
+    private readonly IMapper _mapper;
+    public CarViewModel ViewModel { get; set; }
+    private readonly ICarService _carService;
+    private readonly IValidator<CarDto> _carValidator;
+
+    public CarListPage()
     {
-        private readonly IMapper _mapper;
-        public CarViewModel ViewModel { get; set; }
-        private readonly ICarService _carService;
-        private readonly IValidator<CarDto> _carValidator;
+        InitializeComponent();
 
-
-        public CarListPage()
+        var config = new MapperConfiguration(cfg =>
         {
-            InitializeComponent();
+            cfg.AddProfile<MappingProfile>();
+        });
+        _mapper = config.CreateMapper();
 
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<MappingProfile>();
-            });
-            _mapper = config.CreateMapper();
+        _carService = new CarService(_mapper);
+        _carValidator = new CarValidator();
 
+        ViewModel = new CarViewModel(_carService, _carValidator);
+        this.DataContext = ViewModel;
+    }
 
-            _carService = new CarService(_mapper);
-            _carValidator = new CarValidator();
+    private void AddCar_Click(object sender, RoutedEventArgs e)
+    {
+        CarFormWindow okienko = new CarFormWindow(_carService, _carValidator);
+        okienko.ShowDialog();
+        ViewModel.WczytajSamochody();
+    }
 
-            ViewModel = new CarViewModel(_carService, _carValidator, _mapper);
-            this.DataContext = ViewModel;
-        }
-
-        private void AddCar_Click(object sender, RoutedEventArgs e)
+    private void EditCar_Click(object sender, RoutedEventArgs e)
+    {
+        if (CarsDataGrid.SelectedItem is CarDto zaznaczoneAuto)
         {
-            CarFormWindow okienko = new CarFormWindow(_carService, _carValidator, _mapper);
+            CarFormWindow okienko = new CarFormWindow(_carService, _carValidator, zaznaczoneAuto);
             okienko.ShowDialog();
             ViewModel.WczytajSamochody();
         }
-
-        private void EditCar_Click(object sender, RoutedEventArgs e)
+        else
         {
-            if (CarsDataGrid.SelectedItem is CarDto zaznaczoneAuto)
+            MessageBox.Show("Wybierz samochód z listy, aby go edytować.");
+        }
+    }
+
+    private void DeleteCar_Click(object sender, RoutedEventArgs e)
+    {
+        if (CarsDataGrid.SelectedItem is CarDto zaznaczoneAuto)
+        {
+            var odpowiedz = MessageBox.Show($"Czy na pewno chcesz usunąć {zaznaczoneAuto.Make}?", "Potwierdzenie", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (odpowiedz == MessageBoxResult.Yes)
             {
-                CarFormWindow okienko = new CarFormWindow(_carService, _carValidator, _mapper, zaznaczoneAuto);
-                okienko.ShowDialog();
+                _carService.DeleteCar(zaznaczoneAuto);
                 ViewModel.WczytajSamochody();
             }
-            else
-            {
-                MessageBox.Show("Wybierz samochód z listy, aby go edytować.");
-            }
         }
-
-        private void DeleteCar_Click(object sender, RoutedEventArgs e)
+        else
         {
-            if (CarsDataGrid.SelectedItem is CarDto zaznaczoneAuto)
-            {
-                var odpowiedz = MessageBox.Show($"Czy na pewno chcesz usunąć {zaznaczoneAuto.Make}?", "Potwierdzenie", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                if (odpowiedz == MessageBoxResult.Yes)
-                {
-                    _carService.DeleteCar(zaznaczoneAuto);
-                    ViewModel.WczytajSamochody();
-                }
-            }
-            else
-            {
-                MessageBox.Show("Wybierz samochód z listy, aby go usunąć.");
-            }
+            MessageBox.Show("Wybierz samochód z listy, aby go usunąć.");
         }
     }
 }

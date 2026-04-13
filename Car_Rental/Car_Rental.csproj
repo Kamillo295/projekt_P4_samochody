@@ -9,6 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\Payment.cs" />
+    <Compile Remove="Validators\PaymentValidator.cs" />
     <Compile Remove="Views\RentalPage.xaml.cs" />
     <Compile Remove="Views\StaryCar.xaml.cs" />
     <Compile Remove="Views\StaryCustomer.xaml.cs" />
@@ -21,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="16.1.1" />
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="FluentValidation" Version="12.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.14" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.14" />
